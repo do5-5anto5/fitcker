@@ -1,45 +1,24 @@
 import 'package:fitcker/enums/workout_type.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class WorkoutFormDialog extends StatefulWidget {
+class WorkoutFormDialog extends HookConsumerWidget {
   const WorkoutFormDialog({super.key});
-
   @override
-  State<WorkoutFormDialog> createState() => _WorkoutFormDialogState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formKey = GlobalKey<FormState>();
+    late final TextEditingController nameController;
+    late final TextEditingController weightController;
+    late final TextEditingController repsController;
+    late final TextEditingController setsController;
+    WorkoutType selectedType = WorkoutType.upperBody;
 
-class _WorkoutFormDialogState extends State<WorkoutFormDialog> {
-  final formKey = GlobalKey<FormState>();
-  late final TextEditingController nameController;
-  late final TextEditingController weightController;
-  late final TextEditingController repsController;
-  late final TextEditingController setsController;
-  WorkoutType selectedType = WorkoutType.upperBody;
+    useEffect(() {
+      print('Hello Dart');
+      return null;
+    }, []); // The empty array inside here grants the method runs just the first time of this widget building
 
-  @override
-  void initState() {
-    super.initState();
-    nameController = TextEditingController();
-    weightController = TextEditingController();
-    repsController = TextEditingController();
-    setsController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    weightController.dispose();
-    repsController.dispose();
-    setsController.dispose();
-    super.dispose();
-  }
-
-  void submitForm() {
-    // Your submit form logic here
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Add Workout'),
       content: Form(
@@ -48,27 +27,27 @@ class _WorkoutFormDialogState extends State<WorkoutFormDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
-              controller: nameController,
+              controller: TextEditingController(),
               decoration: const InputDecoration(labelText: 'Name'),
               validator: (value) =>
                   value?.isEmpty ?? true ? 'Please enter a name' : null,
             ),
             TextFormField(
-              controller: weightController,
+              controller: TextEditingController(),
               decoration: const InputDecoration(labelText: 'Weight (kg)'),
               keyboardType: TextInputType.number,
               validator: (value) =>
                   value?.isEmpty ?? true ? 'Please enter weight' : null,
             ),
             TextFormField(
-              controller: repsController,
+              controller: TextEditingController(),
               decoration: const InputDecoration(labelText: 'Reps'),
               keyboardType: TextInputType.number,
               validator: (value) =>
                   value?.isEmpty ?? true ? 'Please enter reps' : null,
             ),
             TextFormField(
-              controller: setsController,
+              controller: TextEditingController(),
               decoration: const InputDecoration(labelText: 'Sets'),
               keyboardType: TextInputType.number,
               validator: (value) =>
@@ -79,9 +58,9 @@ class _WorkoutFormDialogState extends State<WorkoutFormDialog> {
               initialValue: selectedType,
               onChanged: (value) {
                 if (value != null) {
-                  setState(() {
-                    selectedType = value;
-                  });
+                  // setState(() {
+                  //   selectedType = value;
+                  // });
                 }
               },
               items: const [
@@ -103,10 +82,7 @@ class _WorkoutFormDialogState extends State<WorkoutFormDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
-        TextButton(
-          onPressed: submitForm,
-          child: const Text('Add'),
-        ),
+        TextButton(onPressed: () {}, child: const Text('Add')),
       ],
     );
   }
