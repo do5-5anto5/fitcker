@@ -1,10 +1,17 @@
+import 'package:fitcker/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'workout_list_screen.dart';
 
-class OnboardingScreen extends StatelessWidget {
+class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return IntroductionScreen(
@@ -34,8 +41,16 @@ class OnboardingScreen extends StatelessWidget {
   }
 
   void _onDone(BuildContext context) async {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const WorkoutListScreen()),
-    );
+    await _changeOnboardingInitializedState();
+    if (mounted) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const WorkoutListScreen()),
+      );
+    }
+  }
+
+  Future<void> _changeOnboardingInitializedState() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    sharedPrefs.setBool(hasOnboardingInitialized, true);
   }
 }
