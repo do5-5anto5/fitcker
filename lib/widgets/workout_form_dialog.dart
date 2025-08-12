@@ -1,4 +1,5 @@
 import 'package:fitcker/enums/workout_type.dart';
+import 'package:fitcker/providers/workout/workout_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,17 +8,34 @@ class WorkoutFormDialog extends HookConsumerWidget {
   const WorkoutFormDialog({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formKey = GlobalKey<FormState>();
-    late final TextEditingController nameController;
-    late final TextEditingController weightController;
-    late final TextEditingController repsController;
-    late final TextEditingController setsController;
-    WorkoutType selectedType = WorkoutType.upperBody;
+    // useMemoized catches the global key entering that we created only once,
+    // reusing the same instance across all the builds,
+    // preventing bugs
+    final formKey = useMemoized(() => GlobalKey<FormState>());
 
-    useEffect(() {
-      print('Hello Dart');
-      return null;
-    }, []); // The empty array inside here grants the method runs just the first time of this widget building
+    // By using hooks, automatically takes car of disposing controllers.
+    // Also reduce the chances of memory leaks and errors.
+    final nameController = useTextEditingController();
+    final weightController = useTextEditingController();
+    final repsController = useTextEditingController();
+    final setsController = useTextEditingController();
+
+    final selectedType = useState(WorkoutType.upperBody);
+
+    void submit() {
+      if (formKey.currentState?.validate() ?? false) {
+        ref
+            .read(workoutNotifierProvider.notifier)
+            .addWorkout(
+              nameController.text,
+              double.parse(weightController.text),
+              int.parse(repsController.text),
+              int.parse(setsController.text),
+              selectedType.value,
+            );
+        Navigator.of(context).pop();
+      }
+    }
 
     return AlertDialog(
       title: const Text('Add Workout'),
@@ -27,27 +45,27 @@ class WorkoutFormDialog extends HookConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
-              controller: TextEditingController(),
+              controller: nameController,
               decoration: const InputDecoration(labelText: 'Name'),
               validator: (value) =>
                   value?.isEmpty ?? true ? 'Please enter a name' : null,
             ),
             TextFormField(
-              controller: TextEditingController(),
+              controller: weightController,
               decoration: const InputDecoration(labelText: 'Weight (kg)'),
               keyboardType: TextInputType.number,
               validator: (value) =>
                   value?.isEmpty ?? true ? 'Please enter weight' : null,
             ),
             TextFormField(
-              controller: TextEditingController(),
+              controller: repsController,
               decoration: const InputDecoration(labelText: 'Reps'),
               keyboardType: TextInputType.number,
               validator: (value) =>
                   value?.isEmpty ?? true ? 'Please enter reps' : null,
             ),
             TextFormField(
-              controller: TextEditingController(),
+              controller: setsController,
               decoration: const InputDecoration(labelText: 'Sets'),
               keyboardType: TextInputType.number,
               validator: (value) =>
@@ -55,12 +73,10 @@ class WorkoutFormDialog extends HookConsumerWidget {
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<WorkoutType>(
-              initialValue: selectedType,
+              initialValue: selectedType.value,
               onChanged: (value) {
                 if (value != null) {
-                  // setState(() {
-                  //   selectedType = value;
-                  // });
+                  selectedType.value = value;
                 }
               },
               items: const [
@@ -82,7 +98,7 @@ class WorkoutFormDialog extends HookConsumerWidget {
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
-        TextButton(onPressed: () {}, child: const Text('Add')),
+        TextButton(onPressed: submit, child: const Text('Add')),
       ],
     );
   }
