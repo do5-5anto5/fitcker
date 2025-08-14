@@ -1,6 +1,8 @@
+import 'package:fitcker/providers/quote/quote_provider.dart';
 import 'package:fitcker/providers/workout/workout_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../enums/workout_type.dart';
 import '../widgets/workout_calendar_graph.dart';
 import '../widgets/workout_form_dialog.dart';
@@ -15,13 +17,50 @@ class WorkoutListScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const SizedBox.shrink(),
-          toolbarHeight: 170,
-          flexibleSpace: const SafeArea(
+          toolbarHeight: 240,
+          flexibleSpace: SafeArea(
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: EdgeInsets.only(bottom: 56.0, left: 16.0, right: 16.0),
-                child: WorkoutCalendarGraph(),
+                child: Column(
+                  children: [
+                    Consumer(
+                      builder: (_, WidgetRef ref, __) {
+                        final quote = ref.watch(getQuoteProvider);
+                        return quote.maybeWhen(
+                          data: (data) {
+                            return Column(
+                              children: [
+                                Text(
+                                  data.quote,
+                                  maxLines: 3,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    // The refresh() method returns a AsyncValue<T> .
+                                    // So essentially, refresh is an invalidate() method followed by a read to grab the updated state.
+                                    // final _ = ref.refresh(getQuoteProvider);
+                                    ref.invalidate(getQuoteProvider);
+                                  },
+                                  child: Text('Refresh'),
+                                ),
+                              ],
+                            );
+                          },
+                          orElse: () => const SizedBox.shrink(),
+                        );
+                      },
+                    ),
+                    WorkoutCalendarGraph(),
+                  ],
+                ),
               ),
             ),
           ),
