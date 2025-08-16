@@ -1,9 +1,11 @@
+import 'package:fitcker/core/configs/router_configs/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import '../providers/auth/auth_provider.dart';
 import '../widgets/app_button.dart';
-import 'main_screen.dart';
 
 class SignUpScreen extends HookConsumerWidget {
   const SignUpScreen({super.key});
@@ -21,20 +23,16 @@ class SignUpScreen extends HookConsumerWidget {
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 1500),
     );
-    final slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: animationController,
-      curve: Curves.easeOutQuart,
-    ));
-    final fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: animationController,
-      curve: Curves.easeOutQuart,
-    ));
+    final slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: animationController,
+            curve: Curves.easeOutQuart,
+          ),
+        );
+    final fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: animationController, curve: Curves.easeOutQuart),
+    );
 
     useEffect(() {
       animationController.forward();
@@ -84,18 +82,16 @@ class SignUpScreen extends HookConsumerWidget {
     Future<void> onSignUp() async {
       if (formKey.currentState?.validate() != true) return;
 
-      final success = await ref.read(authNotifierProvider.notifier).signUp(
+      final success = await ref
+          .read(authNotifierProvider.notifier)
+          .signUp(
             nameController.text,
             emailController.text,
             passwordController.text,
           );
 
       if (success && context.mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const MainScreen(),
-          ),
-        );
+        context.pushNamed(RouteNames.workout_list);
       } else if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -130,19 +126,19 @@ class SignUpScreen extends HookConsumerWidget {
                     const SizedBox(height: 24),
                     Text(
                       'Create Account',
-                      style:
-                          Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'Start your fitness journey today',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 48),
@@ -228,14 +224,11 @@ class SignUpScreen extends HookConsumerWidget {
                       onFieldSubmitted: (_) => onSignUp(),
                     ),
                     const SizedBox(height: 24),
-                    AppButton(
-                      text: 'Create Account',
-                      onPressed: onSignUp,
-                    ),
+                    AppButton(text: 'Create Account', onPressed: onSignUp),
                     const SizedBox(height: 16),
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        context.pushNamed(RouteNames.sign_in);
                       },
                       child: Text.rich(
                         TextSpan(
