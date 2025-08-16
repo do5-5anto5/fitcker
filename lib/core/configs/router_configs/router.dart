@@ -11,7 +11,7 @@ import 'package:go_router/go_router.dart';
 
 final routeProvider = Provider((ref) {
   return GoRouter(
-    initialLocation: RouteNames.sign_in,
+    initialLocation: RouteNames.signIn,
     errorBuilder: (context, state) {
       return const Scaffold(body: Center(child: Text('Page not found')));
     },
@@ -23,12 +23,12 @@ final routeProvider = Provider((ref) {
         builder: (context, state) => OnboardingScreen(),
       ),
       GoRoute(
-        name: RouteNames.sign_up,
+        name: RouteNames.signUp,
         path: '/sign-up',
         builder: (context, state) => SignUpScreen(),
       ),
       GoRoute(
-        name: RouteNames.sign_in,
+        name: RouteNames.signIn,
         path: '/sign-in',
         builder: (context, state) => SignInScreen(),
       ),
@@ -44,7 +44,7 @@ final routeProvider = Provider((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                name: RouteNames.workout_list,
+                name: RouteNames.workoutList,
                 path: '/workout-list',
                 builder: (context, state) => const WorkoutListScreen(),
               ),
