@@ -1,8 +1,9 @@
+import 'package:fitcker/core/configs/router_configs/route_names.dart';
 import 'package:fitcker/core/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'workout_list_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -43,9 +44,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _onDone(BuildContext context) async {
     await _changeOnboardingInitializedState();
     if (mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const WorkoutListScreen()),
-      );
+      context.pushNamed(RouteNames.sign_up);      
     }
   }
 

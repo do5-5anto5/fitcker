@@ -1,11 +1,9 @@
+import 'package:fitcker/core/configs/router_configs/router.dart';
 import 'package:fitcker/providers/onboarding/onboarding_provider.dart';
-import 'package:fitcker/screens/workout_list_screen.dart';
 import 'package:fitcker/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'screens/onboarding_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,11 +27,17 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final hasOnboardingSeen = ref.read(hasSeenOnboardingProvider);
-    return MaterialApp(
+    // TODO: implement Auth Guard
+    // final hasOnboardingSeen = ref.read(hasSeenOnboardingProvider);
+    // final user = ref.watch(authNotifierProvider);
+
+    final router = ref.watch(routeProvider);
+    return MaterialApp.router(
       title: 'Fitcker',
       theme: theme,
-      home: hasOnboardingSeen? WorkoutListScreen() : OnboardingScreen(),
+      routerDelegate: router.routerDelegate,
+      routeInformationParser: router.routeInformationParser,
+      routeInformationProvider: router.routeInformationProvider,
     );
   }
 }
