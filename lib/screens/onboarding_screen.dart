@@ -1,5 +1,5 @@
 import 'package:fitcker/core/configs/router_configs/route_names.dart';
-import 'package:fitcker/core/constants.dart';
+import 'package:fitcker/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:introduction_screen/introduction_screen.dart';

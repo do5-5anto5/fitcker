@@ -1,5 +1,5 @@
 import 'package:fitcker/enums/workout_type.dart';
-import 'package:fitcker/models/workout.dart';
+import 'package:fitcker/models/workout/workout.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 

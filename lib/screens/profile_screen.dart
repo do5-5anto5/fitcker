@@ -1,4 +1,4 @@
-import 'package:fitcker/models/workout.dart';
+import 'package:fitcker/models/workout/workout.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
