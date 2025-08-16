@@ -27,7 +27,7 @@ class WorkoutListScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Consumer(
-                      builder: (_, WidgetRef ref, __) {
+                      builder: (_, WidgetRef ref, _) {
                         final quote = ref.watch(getQuoteProvider);
                         return quote.maybeWhen(
                           data: (data) {

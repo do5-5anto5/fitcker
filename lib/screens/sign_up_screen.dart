@@ -91,7 +91,7 @@ class SignUpScreen extends HookConsumerWidget {
           );
 
       if (success && context.mounted) {
-        context.pushNamed(RouteNames.workout_list);
+        context.pushNamed(RouteNames.workoutList);
       } else if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -228,7 +228,7 @@ class SignUpScreen extends HookConsumerWidget {
                     const SizedBox(height: 16),
                     TextButton(
                       onPressed: () {
-                        context.pushNamed(RouteNames.sign_in);
+                        context.pushNamed(RouteNames.signIn);
                       },
                       child: Text.rich(
                         TextSpan(
