@@ -27,10 +27,6 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    // TODO: implement Auth Guard
-    // final hasOnboardingSeen = ref.read(hasSeenOnboardingProvider);
-    // final user = ref.watch(authNotifierProvider);
-
     final router = ref.watch(routeProvider);
     return MaterialApp.router(
       title: 'Fitcker',

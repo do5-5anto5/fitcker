@@ -64,7 +64,7 @@ class SignInScreen extends HookConsumerWidget {
           .signIn(emailController.text, passwordController.text);
 
       if (success && context.mounted) {
-        context.pushNamed(RouteNames.workoutList);
+        context.goNamed(RouteNames.workoutList);
       } else if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

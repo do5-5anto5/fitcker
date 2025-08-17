@@ -228,7 +228,7 @@ class SignUpScreen extends HookConsumerWidget {
                     const SizedBox(height: 16),
                     TextButton(
                       onPressed: () {
-                        context.pushNamed(RouteNames.signIn);
+                        context.goNamed(RouteNames.signIn);
                       },
                       child: Text.rich(
                         TextSpan(

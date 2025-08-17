@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:fitcker/core/configs/router_configs/route_names.dart';
+import 'package:fitcker/providers/auth/auth_provider.dart';
+import 'package:fitcker/providers/onboarding/onboarding_provider.dart';
 import 'package:fitcker/screens/main_screen.dart';
 import 'package:fitcker/screens/onboarding_screen.dart';
 import 'package:fitcker/screens/profile_screen.dart';
@@ -8,12 +12,17 @@ import 'package:fitcker/screens/workout_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+part 'redirection.dart';
 
 final routeProvider = Provider((ref) {
   return GoRouter(
-    initialLocation: RouteNames.signIn,
+    initialLocation: '/workout-list',
     errorBuilder: (context, state) {
       return const Scaffold(body: Center(child: Text('Page not found')));
+    },
+    redirect: (context, state) {
+      final redirect = handleRedirect(context, state, ref);
+      return redirect;
     },
     debugLogDiagnostics: true,
     routes: [
