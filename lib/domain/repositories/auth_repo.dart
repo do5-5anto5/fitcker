@@ -6,5 +6,5 @@ abstract class AuthRepo {
   Future<Either<String, Unit>> signInWithEmailAndPassword(String email, String password);
   Future<Either<String, Unit>> signUp(User user);
   Future<Either<String, Unit>> signOut();
-  Future<Either<String, Unit>> getSignedUser();
+  Future<Either<String, User>> getSignedUser();
 }
