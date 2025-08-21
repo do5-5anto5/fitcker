@@ -4,22 +4,19 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../providers/auth/auth_provider.dart';
-import '../widgets/app_button.dart';
+import '../../../providers/auth/auth_provider.dart';
+import '../../widgets/app_button.dart';
 
-class SignUpScreen extends HookConsumerWidget {
-  const SignUpScreen({super.key});
+class SignInScreen extends HookConsumerWidget {
+  const SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formKey = useMemoized(() => GlobalKey<FormState>());
-    final nameController = useTextEditingController();
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
-    final confirmPasswordController = useTextEditingController();
-    final isPasswordVisible = useState(false);
-    final isConfirmPasswordVisible = useState(false);
 
+    final isPasswordVisible = useState(false);
+    final formKey = useMemoized(() => GlobalKey<FormState>());
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 1500),
     );
@@ -38,16 +35,6 @@ class SignUpScreen extends HookConsumerWidget {
       animationController.forward();
       return null;
     }, []);
-
-    String? validateName(String? value) {
-      if (value == null || value.isEmpty) {
-        return 'Name is required';
-      }
-      if (value.length < 2) {
-        return 'Name must be at least 2 characters';
-      }
-      return null;
-    }
 
     String? validateEmail(String? value) {
       if (value == null || value.isEmpty) {
@@ -69,33 +56,22 @@ class SignUpScreen extends HookConsumerWidget {
       return null;
     }
 
-    String? validateConfirmPassword(String? value) {
-      if (value == null || value.isEmpty) {
-        return 'Please confirm your password';
-      }
-      if (value != passwordController.text) {
-        return 'Passwords do not match';
-      }
-      return null;
-    }
-
-    Future<void> onSignUp() async {
+    Future<void> onSignIn() async {
       if (formKey.currentState?.validate() != true) return;
 
       final success = await ref
           .read(authNotifierProvider.notifier)
-          .signUp(
-            nameController.text,
-            emailController.text,
-            passwordController.text,
-          );
+          .signIn(emailController.text, passwordController.text);
 
       if (success && context.mounted) {
-        context.pushNamed(RouteNames.workoutList);
+        context.goNamed(RouteNames.workoutList);
       } else if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Failed to create account'),
+            content: Text(
+              'Invalid credentials',
+              style: TextStyle(color: Colors.white),
+            ),
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
           ),
@@ -125,7 +101,7 @@ class SignUpScreen extends HookConsumerWidget {
                     ),
                     const SizedBox(height: 24),
                     Text(
-                      'Create Account',
+                      'Welcome Back!',
                       style: Theme.of(context).textTheme.headlineMedium
                           ?.copyWith(
                             fontWeight: FontWeight.bold,
@@ -135,28 +111,13 @@ class SignUpScreen extends HookConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Start your fitness journey today',
+                      'Sign in to continue your fitness journey',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Theme.of(context).colorScheme.secondary,
                       ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 48),
-                    TextFormField(
-                      controller: nameController,
-                      decoration: InputDecoration(
-                        labelText: 'Name',
-                        hintText: 'Enter your name',
-                        prefixIcon: const Icon(Icons.person_outline),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      textInputAction: TextInputAction.next,
-                      validator: validateName,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                    ),
-                    const SizedBox(height: 16),
                     TextFormField(
                       controller: emailController,
                       decoration: InputDecoration(
@@ -193,49 +154,24 @@ class SignUpScreen extends HookConsumerWidget {
                         ),
                       ),
                       obscureText: !isPasswordVisible.value,
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                       validator: validatePassword,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: confirmPasswordController,
-                      decoration: InputDecoration(
-                        labelText: 'Confirm Password',
-                        hintText: 'Confirm your password',
-                        prefixIcon: const Icon(Icons.lock_outline),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            isConfirmPasswordVisible.value
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                          onPressed: () => isConfirmPasswordVisible.value =
-                              !isConfirmPasswordVisible.value,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      obscureText: !isConfirmPasswordVisible.value,
-                      textInputAction: TextInputAction.done,
-                      validator: validateConfirmPassword,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      onFieldSubmitted: (_) => onSignUp(),
+                      onFieldSubmitted: (_) => onSignIn(),
                     ),
                     const SizedBox(height: 24),
-                    AppButton(text: 'Create Account', onPressed: onSignUp),
+                    AppButton(onPressed: onSignIn, text: 'Sign In'),
                     const SizedBox(height: 16),
                     TextButton(
                       onPressed: () {
-                        context.goNamed(RouteNames.signIn);
+                        context.goNamed(RouteNames.signUp);
                       },
                       child: Text.rich(
                         TextSpan(
-                          text: 'Already have an account? ',
+                          text: 'Don\'t have an account? ',
                           children: [
                             TextSpan(
-                              text: 'Sign In',
+                              text: 'Sign Up',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context).colorScheme.primary,

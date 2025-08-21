@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'components/notification_section.dart';
+import 'components/notification_tile.dart';
+
 class NotificationsScreen extends HookWidget {
   const NotificationsScreen({super.key});
 
@@ -29,15 +32,13 @@ class NotificationsScreen extends HookWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Notifications'),
-      ),
+      appBar: AppBar(title: const Text('Notifications')),
       body: ListView(
         children: [
-          _NotificationSection(
+          NotificationSection(
             title: 'Workout Reminders',
             children: [
-              _NotificationTile(
+              NotificationTile(
                 title: 'Daily Workout Reminder',
                 subtitle: 'Remind me to workout daily',
                 value: workoutReminder.value,
@@ -46,7 +47,7 @@ class NotificationsScreen extends HookWidget {
                   saveNotificationPreference('workoutReminder', value);
                 },
               ),
-              _NotificationTile(
+              NotificationTile(
                 title: 'Weekly Progress Report',
                 subtitle: 'Send me weekly progress updates',
                 value: weeklyProgress.value,
@@ -57,10 +58,10 @@ class NotificationsScreen extends HookWidget {
               ),
             ],
           ),
-          _NotificationSection(
+          NotificationSection(
             title: 'System Notifications',
             children: [
-              _NotificationTile(
+              NotificationTile(
                 title: 'Push Notifications',
                 subtitle: 'Enable push notifications',
                 value: pushNotifications.value,
@@ -69,7 +70,7 @@ class NotificationsScreen extends HookWidget {
                   saveNotificationPreference('pushNotifications', value);
                 },
               ),
-              _NotificationTile(
+              NotificationTile(
                 title: 'Email Notifications',
                 subtitle: 'Receive email notifications',
                 value: emailNotifications.value,
@@ -82,59 +83,6 @@ class NotificationsScreen extends HookWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _NotificationSection extends StatelessWidget {
-  final String title;
-  final List<Widget> children;
-
-  const _NotificationSection({
-    required this.title,
-    required this.children,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-          ),
-        ),
-        ...children,
-      ],
-    );
-  }
-}
-
-class _NotificationTile extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final bool value;
-  final ValueChanged<bool> onChanged;
-
-  const _NotificationTile({
-    required this.title,
-    required this.subtitle,
-    required this.value,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SwitchListTile(
-      title: Text(title),
-      subtitle: Text(subtitle),
-      value: value,
-      onChanged: onChanged,
     );
   }
 }

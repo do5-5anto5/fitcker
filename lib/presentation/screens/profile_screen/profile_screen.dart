@@ -1,15 +1,15 @@
 import 'package:fitcker/core/configs/router_configs/route_names.dart';
-import 'package:fitcker/models/workout/workout.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../providers/auth/auth_provider.dart';
-import '../providers/workout/workout_provider.dart';
-import 'edit_profile_screen.dart';
-import 'help_support_screen.dart';
-import 'notifications_screen.dart';
-import 'settings_screen.dart';
+import '../../../providers/auth/auth_provider.dart';
+import '../../../providers/workout/workout_provider.dart';
+import '../edit_profile_screen/edit_profile_screen.dart';
+import '../help_support_screen/help_support_screen.dart';
+import '../notifications_screen/notifications_screen.dart';
+import '../settings_screen/settings_screen.dart';
+import 'components/profile_components.dart';
 
 class ProfileScreen extends HookConsumerWidget {
   const ProfileScreen({super.key});
@@ -82,13 +82,13 @@ class ProfileScreen extends HookConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 32),
-                _StatsRow(workouts: workouts),
+                StatsRow(workouts: workouts),
                 const SizedBox(height: 32),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     children: [
-                      _ProfileMenuItem(
+                      ProfileMenuItem(
                         icon: Icons.person_outline,
                         title: 'Edit Profile',
                         onTap: () {
@@ -100,7 +100,7 @@ class ProfileScreen extends HookConsumerWidget {
                           );
                         },
                       ),
-                      _ProfileMenuItem(
+                      ProfileMenuItem(
                         icon: Icons.settings_outlined,
                         title: 'Settings',
                         onTap: () {
@@ -112,7 +112,7 @@ class ProfileScreen extends HookConsumerWidget {
                           );
                         },
                       ),
-                      _ProfileMenuItem(
+                      ProfileMenuItem(
                         icon: Icons.notifications_outlined,
                         title: 'Notifications',
                         onTap: () {
@@ -124,7 +124,7 @@ class ProfileScreen extends HookConsumerWidget {
                           );
                         },
                       ),
-                      _ProfileMenuItem(
+                      ProfileMenuItem(
                         icon: Icons.help_outline,
                         title: 'Help & Support',
                         onTap: () {
@@ -160,108 +160,6 @@ class ProfileScreen extends HookConsumerWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _StatsRow extends StatelessWidget {
-  final List<Workout> workouts;
-
-  const _StatsRow({required this.workouts});
-
-  @override
-  Widget build(BuildContext context) {
-    final completedWorkouts = workouts.where((w) => w.isCompleted).length;
-    final inProgressWorkouts = workouts.where((w) => !w.isCompleted).length;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _StatItem(
-            value: '${workouts.length}',
-            label: 'Workouts',
-            icon: Icons.fitness_center,
-          ),
-          _StatItem(
-            value: '$completedWorkouts',
-            label: 'Completed',
-            icon: Icons.check_circle,
-          ),
-          _StatItem(
-            value: '$inProgressWorkouts',
-            label: 'In Progress',
-            icon: Icons.pending,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _StatItem extends StatelessWidget {
-  final String value;
-  final String label;
-  final IconData icon;
-
-  const _StatItem({
-    required this.value,
-    required this.label,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, color: theme.colorScheme.primary),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          value,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Text(
-          label,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.secondary,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _ProfileMenuItem extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final VoidCallback onTap;
-
-  const _ProfileMenuItem({
-    required this.icon,
-    required this.title,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return ListTile(
-      onTap: onTap,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      leading: Icon(icon, color: theme.colorScheme.primary),
-      title: Text(title),
-      trailing: const Icon(Icons.chevron_right),
     );
   }
 }

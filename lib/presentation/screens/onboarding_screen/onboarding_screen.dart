@@ -44,7 +44,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _onDone(BuildContext context) async {
     await _changeOnboardingInitializedState();
     if (context.mounted) {
-      context.pushNamed(RouteNames.signUp);
+      context.goNamed(RouteNames.signUp);
     }
   }
 

@@ -34,9 +34,8 @@ class AppButton extends HookWidget {
                   await onPressed!();
                 }
                 if (context.mounted) {
-                  return;
-                }
                 isLoading.value = false;
+                }
               },
         style: FilledButton.styleFrom(
           padding: const EdgeInsets.all(16),
