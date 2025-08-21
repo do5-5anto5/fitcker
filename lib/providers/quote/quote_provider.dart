@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:fitcker/core/extensions/ref_debounce_and_cancel.dart';
-import 'package:fitcker/models/quote/quote.dart';
+import 'package:fitcker/data/models/quote/quote.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

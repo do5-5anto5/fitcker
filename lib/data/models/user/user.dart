@@ -1,10 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'user.freezed.dart';
-part 'user.g.dart';
+part '../../../models/user/user.freezed.dart';
+part '../../../models/user/user.g.dart';
 
 @freezed
-sealed class User with _$User {
+sealed class User {
   const factory User({
     required String id,
     required String name,
