@@ -1,30 +1,31 @@
 import 'package:flutter/material.dart';
 
+import 'components/expandable_faq.dart';
+import 'components/support_section.dart';
+
 class HelpSupportScreen extends StatelessWidget {
   const HelpSupportScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Help & Support'),
-      ),
+      appBar: AppBar(title: const Text('Help & Support')),
       body: ListView(
         children: [
-          const _SupportSection(
+          const SupportSection(
             title: 'Frequently Asked Questions',
             children: [
-              _ExpandableFAQ(
+              ExpandableFAQ(
                 question: 'How do I track my workouts?',
                 answer:
                     'To track your workouts, go to the home screen and tap the "+" button. Fill in your workout details and save.',
               ),
-              _ExpandableFAQ(
+              ExpandableFAQ(
                 question: 'How do I view my progress?',
                 answer:
                     'Your progress is displayed on the home screen through the calendar graph. Each colored cell represents a workout day.',
               ),
-              _ExpandableFAQ(
+              ExpandableFAQ(
                 question: 'Can I edit my profile?',
                 answer:
                     'Yes! Go to Profile tab and tap "Edit Profile" to update your information.',
@@ -32,7 +33,7 @@ class HelpSupportScreen extends StatelessWidget {
             ],
           ),
           const Divider(),
-          _SupportSection(
+          SupportSection(
             title: 'Contact Support',
             children: [
               ListTile(
@@ -54,7 +55,7 @@ class HelpSupportScreen extends StatelessWidget {
             ],
           ),
           const Divider(),
-          _SupportSection(
+          SupportSection(
             title: 'Resources',
             children: [
               ListTile(
@@ -75,63 +76,6 @@ class HelpSupportScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _SupportSection extends StatelessWidget {
-  final String title;
-  final List<Widget> children;
-
-  const _SupportSection({
-    required this.title,
-    required this.children,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-          ),
-        ),
-        ...children,
-      ],
-    );
-  }
-}
-
-class _ExpandableFAQ extends StatelessWidget {
-  final String question;
-  final String answer;
-
-  const _ExpandableFAQ({
-    required this.question,
-    required this.answer,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: Text(question),
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            answer,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-          ),
-        ),
-      ],
     );
   }
 }

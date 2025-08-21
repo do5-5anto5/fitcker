@@ -46,12 +46,14 @@ class WorkoutFormDialog extends HookConsumerWidget {
           children: [
             TextFormField(
               controller: nameController,
+              textInputAction: TextInputAction.next,
               decoration: const InputDecoration(labelText: 'Name'),
               validator: (value) =>
                   value?.isEmpty ?? true ? 'Please enter a name' : null,
             ),
             TextFormField(
               controller: weightController,
+              textInputAction: TextInputAction.next,
               decoration: const InputDecoration(labelText: 'Weight (kg)'),
               keyboardType: TextInputType.number,
               validator: (value) =>
@@ -59,6 +61,7 @@ class WorkoutFormDialog extends HookConsumerWidget {
             ),
             TextFormField(
               controller: repsController,
+              textInputAction: TextInputAction.next,
               decoration: const InputDecoration(labelText: 'Reps'),
               keyboardType: TextInputType.number,
               validator: (value) =>
@@ -66,6 +69,7 @@ class WorkoutFormDialog extends HookConsumerWidget {
             ),
             TextFormField(
               controller: setsController,
+              textInputAction: TextInputAction.next,
               decoration: const InputDecoration(labelText: 'Sets'),
               keyboardType: TextInputType.number,
               validator: (value) =>
