@@ -1,5 +1,5 @@
 
-import 'package:fitcker/models/workout/workout.dart';
+import 'package:fitcker/data/models/workout/workout.dart';
 import 'package:flutter/material.dart';
 
 import 'stat_item.dart';
